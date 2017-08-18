@@ -6,8 +6,6 @@ SCK (Serial Clock)  ->  A5 on Uno/Pro-Mini, 21 on Mega2560/Due, 3 Leonardo/Pro-M
 */
 
 #include <BME280I2C.h>
-#include "var.h"
-
 
 class BME280Access {
 
@@ -36,7 +34,7 @@ public:
 #endif
 	}
 
-	void getData(float* ttemp, float* thum, float* tpres) {
+	void getData(float  *ttemp, float *thum, float *tpres) {
 		float temp, hum, pres;
 		uint8_t pressureUnit(0x4);  // unit: B000 = Pa, B001 = hPa, B010 = Hg, B011 = atm, B100 = bar, B101 = torr, B110 = N/m^2, B111 = psi
 

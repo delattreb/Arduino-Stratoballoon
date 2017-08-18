@@ -5,7 +5,6 @@
 
 #include <string.h>
 #include <time.h>
-#include "var.h"
 
 class Logger {
 

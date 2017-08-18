@@ -3,7 +3,6 @@
 //
 
 #include <LiquidCrystal_I2C.h>
-#include "var.h"
 
 LiquidCrystal_I2C lcdi2c(LCD_ADDR, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
 
@@ -47,7 +46,7 @@ public:
 		lcdi2c.setCursor(x, 0);
 		lcdi2c.print(temp, 1);
 		lcdi2c.setCursor(x, 1);
-		lcdi2c.print(dhthum, 0);
+		lcdi2c.print(hum, 0);
 	}
 };
 

@@ -1,0 +1,181 @@
+//
+// Created by Bruno on 12/08/2017.
+//
+
+#include "TinyGPS.h"
+#include <SoftwareSerial.h>
+
+
+TinyGPS tinygps;
+SoftwareSerial nss(RXPIN, TXPIN);
+
+class gpsAccess {
+
+private:
+
+protected:
+
+public:
+
+	gpsAccess() {
+	}
+
+	~gpsAccess() {
+	}
+
+	void begin()
+	{
+		nss.begin(9600);
+	}
+
+	//
+	// getSpeed
+	//
+	void getSpeed(float *kmph)
+	{
+		if (getData())
+		{
+			*kmph = tinygps.f_speed_kmph(); // speed in km/hr
+#ifdef INFO
+			Serial.print("Vitesse: ");
+			Serial.println(*kmph);
+#endif
+		}
+	}
+
+	//
+	// getCourse
+	//
+	void getCourse(float *fc)
+	{
+		if (getData())
+		{
+			*fc = tinygps.f_course(); // course in degrees
+#ifdef INFO
+			Serial.print("Course: ");
+			Serial.println(*fc);
+#endif
+		}
+	}
+
+	//
+	// getAltitude
+	//
+	void getAltitude(float *alt)
+	{
+		if (getData())
+		{
+			*alt = tinygps.f_altitude(); // +/- altitude in meters
+#ifdef INFO
+			Serial.print("Altitude: ");
+			Serial.println(*alt);
+#endif
+		}
+	}
+
+	//
+	// isFix
+	//
+	int isFix()
+	{
+		float flat, flon;
+		unsigned long fix_age;
+
+		tinygps.f_get_position(&flat, &flon, &fix_age);
+		if (fix_age == TinyGPS::GPS_INVALID_AGE)
+			return NOK;
+		else if (fix_age > 5000)
+			return READY;
+		else
+			return OK;
+	}
+
+	//
+	// getDateTime
+	//
+	void getDateTime(unsigned long *date, unsigned long *time, unsigned long *fix_age)
+	{
+		// time in hhmmsscc, date in ddmmyy
+		if (getData())
+		{
+			tinygps.get_datetime(date, time, fix_age);
+		}
+	}
+
+	//
+	// getDateTime
+	//
+	void getDateTime(DateTime *now)
+	{
+		if (getData())
+		{
+			int year;
+			byte month, day, hour, minute, second, hundredths;
+			unsigned long fix_age;
+
+			tinygps.crack_datetime(&year, &month, &day, &hour, &minute, &second, &hundredths, &fix_age);
+
+			DateTime nowGPS;
+			nowGPS.setyear(int(year));
+			nowGPS.setmonth(int(month));
+			nowGPS.setday(int(day));
+			nowGPS.sethour(int(hour));
+			nowGPS.setminute(int(minute));
+			nowGPS.setsecond(int(second));
+			*now = nowGPS;
+#ifdef INFO
+			Serial.println(now->minute());
+#endif
+		}
+	}
+
+	//
+	// getStatistics
+	//
+	void getStatistics(unsigned long *chars, unsigned short *sentences, unsigned short *failed_checksum)
+	{
+		if (getData())
+		{
+			tinygps.stats(chars, sentences, failed_checksum);
+#ifdef INFO
+			Serial.print("Nb Char: ");
+			Serial.println(*chars);
+			Serial.print("Phrase ok: ");
+			Serial.println(*sentences);
+			Serial.print("Checksum: ");
+			Serial.println(*failed_checksum);
+#endif
+		}
+	}
+
+	//
+	// getPosition
+	//
+	void getPosition(long *flat, long *flon, unsigned long *fix_age)
+	{
+		if (getData())
+		{
+			tinygps.get_position(flat, flon, fix_age);
+
+#ifdef INFO
+			Serial.print("Latitude: ");
+			Serial.println(*flat);
+			Serial.print("Longitude: ");
+			Serial.println(*flon);
+#endif // DEBUG
+		}
+	}
+
+	//
+	// getData
+	//
+	bool getData()
+	{
+		while (nss.available())
+		{
+			int c = nss.read();
+			//Serial.print(c);
+			return tinygps.encode(c);
+		}
+	}
+};

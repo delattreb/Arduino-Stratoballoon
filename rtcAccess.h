@@ -3,8 +3,6 @@
 //
 
 #include "RTClib.h"
-#include "var.h"
-
 
 class rtcAccess {
 

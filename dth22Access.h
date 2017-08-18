@@ -3,8 +3,6 @@
 //
 
 #include <SimpleDHT.h>
-#include "var.h"
-
 
 SimpleDHT22 dht22;
 

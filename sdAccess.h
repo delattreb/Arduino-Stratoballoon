@@ -2,8 +2,6 @@
 // Created by Bruno on 30/06/2017.
 //
 
-#include "var.h"
-
 class sdAccess {
 
 private:
