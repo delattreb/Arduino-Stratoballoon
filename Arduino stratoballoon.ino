@@ -81,6 +81,7 @@ void loop() {
 
 
 	gyro.getData(&ax, &ay, &az, &gx, &gy, &gz);
+	Serial.println(ay);
 
 	//if (gps.getData()) {
 		//gps.getPosition(&lat, &lon, &age);
