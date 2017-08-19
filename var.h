@@ -24,7 +24,7 @@
 //Acquisition frequency
 #define ACQ_FREQUENCY 10000
 #define LOG_FREQUENCY 120000
-#define ACQ_GPS_DURATION 450
+#define ACQ_GPS_DURATION 800
 
 #define BLINK_TIME 50
 #define BLINK_INIT 3
