@@ -1,6 +1,10 @@
 #include "I2Cdev.h"
 #include <MPU6050.h>
 
+#if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
+#include "Wire.h"
+#endif
+
 MPU6050 accelgyro;
 
 class gyroAccess {
@@ -36,6 +40,21 @@ public:
 
 	void getData(int16_t *ax, int16_t *ay, int16_t *az, int16_t *gx, int16_t *gy, int16_t *gz) {
 		accelgyro.getMotion6(ax, ay, az, gx, gy, gz);
+#ifdef DEBUG
+		Serial.print("Ax: ");
+		Serial.println(*ax);
+		Serial.print("Ay: ");
+		Serial.println(*ay);
+		Serial.print("Az: ");
+		Serial.println(*az);
+		Serial.print("Gx: ");
+		Serial.println(*gx);
+		Serial.print("Gy: ");
+		Serial.println(*gy);
+		Serial.print("Gz: ");
+		Serial.println(*gz);
+#endif 
+
 		//accelgyro.getAcceleration(&ax, &ay, &az);
 		//accelgyro.getRotation(&gx, &gy, &gz);
 	}

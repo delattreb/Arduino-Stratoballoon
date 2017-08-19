@@ -14,6 +14,7 @@
 #include "lcdAccess.h"
 #include "ledAccess.h"
 #include "gpsAccess.h"
+#include "gyroAccess.h"
 
 #pragma region Global var
 BME280Access bme;
@@ -22,12 +23,12 @@ sdAccess sda;
 lcdAccess lcd;
 ledAccess led;
 gpsAccess gps;
+gyroAccess gyro;
 
 DateTime now;
 static unsigned long previousMillis = 0;
 static unsigned long previousMillisGPS = 0;
 #pragma endregion 
-
 
 //
 // Setup
@@ -38,25 +39,26 @@ void setup() {
 	while (!Serial) {
 		;
 	}
+	Serial.print(APPNAME);
+	Serial.print(" v");
+	Serial.println(APPVERSION);
 #endif
+
 	//for (int i = 0; i < NB_IO_OUTPUT; i++) // For LowPower
 	//	pinMode(LED_PIN, OUTPUT);
 
 	// Init component
 	SPI.begin();
 	Wire.begin();
+	Wire.setClock(400000); // 400kHz I2C clock. 
 
+	gyro.begin();
 	gps.begin();
 	//rtc.init();
 	//bme.init();
 	//lcd.begin();
 	//lcd.displayText();
 
-#ifdef DEBUG
-	Serial.print(APPNAME);
-	Serial.print(" v");
-	Serial.println(APPVERSION);
-#endif
 	led.BlinkLed(BLINK_INIT, BLINK_INIT_TIME);
 }
 
@@ -66,46 +68,38 @@ void setup() {
 void loop() {
 	long lat, lon;
 	unsigned long age;
-
 	unsigned long chars;
 	unsigned short sentences;
 	unsigned short failed_checksum;
-
 	DateTime now;
-
-
+	int16_t ax, ay, az, gx, gy, gz;
 	float altitude, speed, course;
-
 	long prec;
 	float temp, hum, pres, dewpoint, dhttemp, dhthum;
 	previousMillis = millis();
 
-	Serial.println("Start");
 	if (gps.getData()) {
 		gps.getPosition(&lat, &lon, &age);
+		//gps.getStatistics(&chars, &sentences, &failed_checksum);
+		//gps.getDateTime(&now);
+		//gps.getAltitude(&altitude);
+		//gps.getCourse(&course);
+		//gps.getSpeed(&speed);
 	}
-	Serial.println("Stop");
-
 	gyro.getData(&ax, &ay, &az, &gx, &gy, &gz);
-	Serial.println(ay);
-
-	//gps.getStatistics(&chars, &sentences, &failed_checksum);
-	//gps.getDateTime(&now);
-	//gps.getAltitude(&altitude);
-	//gps.getCourse(&course);
-	//gps.getSpeed(&speed);
 
 	//bme.getData(&temp, &hum, &pres);
 	//bme.CalculatedData(&altitude, &dewpoint);
 
-	//led.BlinkLed(1, BLINK_TIME);
+	
 	//lcd.displayData(temp, hum, dhttemp, dhthum);
 
-	/* Réalise une prise de mesure toutes les DELAY_BETWEEN_MEASURES millisecondes */
+	//Save data
 	if (millis() - previousMillis >= LOG_FREQUENCY) {
 		previousMillis = millis();
 		now = rtc.getDateTime();
 		//sda.WriteData(temp, hum, pres, altitude, dewpoint, dhttemp, dhthum, now);
 	}
+	//led.BlinkLed(1, BLINK_TIME);
 	delay(ACQ_FREQUENCY);
 }

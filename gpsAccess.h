@@ -33,7 +33,7 @@ public:
 	void getSpeed(float *kmph)
 	{
 		*kmph = tinygps.f_speed_kmph(); // speed in km/hr
-#ifdef INFO
+#ifdef DEBUG
 		Serial.print("Vitesse: ");
 		Serial.println(*kmph);
 #endif
@@ -45,7 +45,7 @@ public:
 	void getCourse(float *fc)
 	{
 		*fc = tinygps.f_course(); // course in degrees
-#ifdef INFO
+#ifdef DEBUG
 		Serial.print("Course: ");
 		Serial.println(*fc);
 #endif
@@ -59,7 +59,7 @@ public:
 	{
 
 		*alt = tinygps.f_altitude(); // +/- altitude in meters
-#ifdef INFO
+#ifdef DEBUG
 		Serial.print("Altitude: ");
 		Serial.println(*alt);
 #endif
@@ -110,8 +110,14 @@ public:
 		nowGPS.setminute(int(minute));
 		nowGPS.setsecond(int(second));
 		*now = nowGPS;
-#ifdef INFO
-		Serial.println(now->minute());
+#ifdef DEBUG
+		Serial.print(now->hour());
+		Serial.print(now->minute());
+		Serial.println(now->second());
+		Serial.println("");
+		Serial.print(now->day());
+		Serial.print(now->month());
+		Serial.println(now->year());
 #endif
 
 	}
@@ -122,7 +128,7 @@ public:
 	void getStatistics(unsigned long *chars, unsigned short *sentences, unsigned short *failed_checksum)
 	{
 		tinygps.stats(chars, sentences, failed_checksum);
-#ifdef INFO
+#ifdef DEBUG
 		Serial.print("Nb Char: ");
 		Serial.println(*chars);
 		Serial.print("Phrase ok: ");
@@ -140,12 +146,12 @@ public:
 	{
 		tinygps.get_position(flat, flon, fix_age);
 
-#ifdef INFO
+#ifdef DEBUG
 		Serial.print("Latitude: ");
 		Serial.println(*flat);
 		Serial.print("Longitude: ");
 		Serial.println(*flon);
-#endif // DEBUG
+#endif 
 
 	}
 
