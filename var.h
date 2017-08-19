@@ -10,8 +10,8 @@
 #define NB_IO_OUTPUT 8
 
 //SoftwareSerial
-#define RXPIN 6
-#define TXPIN 5
+#define RXPIN 3
+#define TXPIN 2
 
 //DHT22
 #define PINDHT22 2
@@ -30,9 +30,6 @@
 #define BLINK_INIT 3
 #define BLINK_INIT_TIME 250
 
-//MPU6050
-#define INTERRUPT_PIN 2  
-
 //LED
 #define LED_PIN 7
 
@@ -40,7 +37,7 @@
 #define SD_PIN 10
 
 //Serial
-#define SERIAL_BAUD 38400 //Check value for 8Mhz
+#define SERIAL_BAUD 115200
 
 //VAR DIALOG
 #define OK 0
