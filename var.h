@@ -22,8 +22,9 @@
 #define LCD_ROW 16
 
 //Acquisition frequency
-#define ACQ_FREQUENCY 100000
+#define ACQ_FREQUENCY 10000
 #define LOG_FREQUENCY 120000
+#define ACQ_GPS_DURATION 450
 
 #define BLINK_TIME 50
 #define BLINK_INIT 3

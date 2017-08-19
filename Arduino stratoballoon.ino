@@ -25,7 +25,7 @@ gpsAccess gps;
 
 DateTime now;
 static unsigned long previousMillis = 0;
-unsigned long currentMillis;
+static unsigned long previousMillisGPS = 0;
 #pragma endregion 
 
 
@@ -78,18 +78,20 @@ void loop() {
 
 	long prec;
 	float temp, hum, pres, dewpoint, dhttemp, dhthum;
+	previousMillis = millis();
 
+	Serial.println("Start");
 	if (gps.getData()) {
 		gps.getPosition(&lat, &lon, &age);
-		delay(ACQ_FREQUENCY);
 	}
+	Serial.println("Stop");
+
+
 	//gps.getStatistics(&chars, &sentences, &failed_checksum);
 	//gps.getDateTime(&now);
 	//gps.getAltitude(&altitude);
 	//gps.getCourse(&course);
 	//gps.getSpeed(&speed);
-
-	currentMillis = millis();
 
 	//bme.getData(&temp, &hum, &pres);
 	//bme.CalculatedData(&altitude, &dewpoint);
@@ -98,10 +100,10 @@ void loop() {
 	//lcd.displayData(temp, hum, dhttemp, dhthum);
 
 	/* Réalise une prise de mesure toutes les DELAY_BETWEEN_MEASURES millisecondes */
-	if (currentMillis - previousMillis >= LOG_FREQUENCY) {
-		previousMillis = currentMillis;
+	if (millis() - previousMillis >= LOG_FREQUENCY) {
+		previousMillis = millis();
 		now = rtc.getDateTime();
 		//sda.WriteData(temp, hum, pres, altitude, dewpoint, dhttemp, dhthum, now);
 	}
-	//delay(ACQ_FREQUENCY);
+	delay(ACQ_FREQUENCY);
 }

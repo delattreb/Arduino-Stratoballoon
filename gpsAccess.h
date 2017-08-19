@@ -16,7 +16,6 @@ private:
 protected:
 
 public:
-
 	gpsAccess() {
 	}
 
@@ -155,11 +154,19 @@ public:
 	//
 	bool getData()
 	{
-		if (nss.available())
-		{
-			char c = nss.read();
-			//Serial.print(c);
-			return tinygps.encode(c);
+		bool newdata = false;
+		unsigned long start = millis();
+
+		while (millis() - start < ACQ_GPS_DURATION) {
+			if (nss.available()) {
+				char c = nss.read();
+				// Serial.print(c);  
+				if (tinygps.encode(c)) {
+					newdata = true;
+					// break;  // uncomment to print new data immediately!
+				}
+			}
 		}
+		return newdata;
 	}
 };
