@@ -86,6 +86,8 @@ void loop() {
 	}
 	Serial.println("Stop");
 
+	gyro.getData(&ax, &ay, &az, &gx, &gy, &gz);
+	Serial.println(ay);
 
 	//gps.getStatistics(&chars, &sentences, &failed_checksum);
 	//gps.getDateTime(&now);
