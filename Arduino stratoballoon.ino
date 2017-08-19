@@ -23,8 +23,6 @@ lcdAccess lcd;
 ledAccess led;
 gpsAccess gps;
 
-
-String datestr, timestr;
 DateTime now;
 static unsigned long previousMillis = 0;
 unsigned long currentMillis;
@@ -81,12 +79,15 @@ void loop() {
 	long prec;
 	float temp, hum, pres, dewpoint, dhttemp, dhthum;
 
-	gps.getPosition(&lat, &lon, &age);
+	if (gps.getData()) {
+		gps.getPosition(&lat, &lon, &age);
+		delay(ACQ_FREQUENCY);
+	}
 	//gps.getStatistics(&chars, &sentences, &failed_checksum);
 	//gps.getDateTime(&now);
 	//gps.getAltitude(&altitude);
-	gps.getCourse(&course);
-	gps.getSpeed(&speed);
+	//gps.getCourse(&course);
+	//gps.getSpeed(&speed);
 
 	currentMillis = millis();
 

@@ -33,14 +33,11 @@ public:
 	//
 	void getSpeed(float *kmph)
 	{
-		if (getData())
-		{
-			*kmph = tinygps.f_speed_kmph(); // speed in km/hr
+		*kmph = tinygps.f_speed_kmph(); // speed in km/hr
 #ifdef INFO
-			Serial.print("Vitesse: ");
-			Serial.println(*kmph);
+		Serial.print("Vitesse: ");
+		Serial.println(*kmph);
 #endif
-		}
 	}
 
 	//
@@ -48,29 +45,25 @@ public:
 	//
 	void getCourse(float *fc)
 	{
-		if (getData())
-		{
-			*fc = tinygps.f_course(); // course in degrees
+		*fc = tinygps.f_course(); // course in degrees
 #ifdef INFO
-			Serial.print("Course: ");
-			Serial.println(*fc);
+		Serial.print("Course: ");
+		Serial.println(*fc);
 #endif
-		}
 	}
+
 
 	//
 	// getAltitude
 	//
 	void getAltitude(float *alt)
 	{
-		if (getData())
-		{
-			*alt = tinygps.f_altitude(); // +/- altitude in meters
+
+		*alt = tinygps.f_altitude(); // +/- altitude in meters
 #ifdef INFO
-			Serial.print("Altitude: ");
-			Serial.println(*alt);
+		Serial.print("Altitude: ");
+		Serial.println(*alt);
 #endif
-		}
 	}
 
 	//
@@ -96,10 +89,7 @@ public:
 	void getDateTime(unsigned long *date, unsigned long *time, unsigned long *fix_age)
 	{
 		// time in hhmmsscc, date in ddmmyy
-		if (getData())
-		{
-			tinygps.get_datetime(date, time, fix_age);
-		}
+		tinygps.get_datetime(date, time, fix_age);
 	}
 
 	//
@@ -107,26 +97,24 @@ public:
 	//
 	void getDateTime(DateTime *now)
 	{
-		if (getData())
-		{
-			int year;
-			byte month, day, hour, minute, second, hundredths;
-			unsigned long fix_age;
+		int year;
+		byte month, day, hour, minute, second, hundredths;
+		unsigned long fix_age;
 
-			tinygps.crack_datetime(&year, &month, &day, &hour, &minute, &second, &hundredths, &fix_age);
+		tinygps.crack_datetime(&year, &month, &day, &hour, &minute, &second, &hundredths, &fix_age);
 
-			DateTime nowGPS;
-			nowGPS.setyear(int(year));
-			nowGPS.setmonth(int(month));
-			nowGPS.setday(int(day));
-			nowGPS.sethour(int(hour));
-			nowGPS.setminute(int(minute));
-			nowGPS.setsecond(int(second));
-			*now = nowGPS;
+		DateTime nowGPS;
+		nowGPS.setyear(int(year));
+		nowGPS.setmonth(int(month));
+		nowGPS.setday(int(day));
+		nowGPS.sethour(int(hour));
+		nowGPS.setminute(int(minute));
+		nowGPS.setsecond(int(second));
+		*now = nowGPS;
 #ifdef INFO
-			Serial.println(now->minute());
+		Serial.println(now->minute());
 #endif
-		}
+
 	}
 
 	//
@@ -134,18 +122,16 @@ public:
 	//
 	void getStatistics(unsigned long *chars, unsigned short *sentences, unsigned short *failed_checksum)
 	{
-		if (getData())
-		{
-			tinygps.stats(chars, sentences, failed_checksum);
+		tinygps.stats(chars, sentences, failed_checksum);
 #ifdef INFO
-			Serial.print("Nb Char: ");
-			Serial.println(*chars);
-			Serial.print("Phrase ok: ");
-			Serial.println(*sentences);
-			Serial.print("Checksum: ");
-			Serial.println(*failed_checksum);
+		Serial.print("Nb Char: ");
+		Serial.println(*chars);
+		Serial.print("Phrase ok: ");
+		Serial.println(*sentences);
+		Serial.print("Checksum: ");
+		Serial.println(*failed_checksum);
 #endif
-		}
+
 	}
 
 	//
@@ -153,17 +139,15 @@ public:
 	//
 	void getPosition(long *flat, long *flon, unsigned long *fix_age)
 	{
-		if (getData())
-		{
-			tinygps.get_position(flat, flon, fix_age);
+		tinygps.get_position(flat, flon, fix_age);
 
 #ifdef INFO
-			Serial.print("Latitude: ");
-			Serial.println(*flat);
-			Serial.print("Longitude: ");
-			Serial.println(*flon);
+		Serial.print("Latitude: ");
+		Serial.println(*flat);
+		Serial.print("Longitude: ");
+		Serial.println(*flon);
 #endif // DEBUG
-		}
+
 	}
 
 	//
@@ -171,9 +155,9 @@ public:
 	//
 	bool getData()
 	{
-		while (nss.available())
+		if (nss.available())
 		{
-			int c = nss.read();
+			char c = nss.read();
 			//Serial.print(c);
 			return tinygps.encode(c);
 		}
