@@ -11,7 +11,6 @@ class gyroAccess {
 
 private:
 
-		
 public:
 
 	gyroAccess() {
@@ -24,9 +23,10 @@ public:
 		// initialize device
 		accelgyro.initialize();
 
-#ifdef DEBUG
+#ifdef INFO
+		Serial.println("-- MPU6050 --");
 		Serial.println(accelgyro.testConnection() ? "MPU6050 connection successful" : "MPU6050 connection failed");
-#endif // DEBUG
+#endif 
 
 		/*// use the code below to change accel/gyro offset values
 		accelgyro.setXGyroOffset(0);
@@ -40,21 +40,20 @@ public:
 
 	void getData(int16_t *ax, int16_t *ay, int16_t *az, int16_t *gx, int16_t *gy, int16_t *gz) {
 		accelgyro.getMotion6(ax, ay, az, gx, gy, gz);
-#ifdef DEBUG
+#ifdef INFO
 		Serial.print("Ax: ");
-		Serial.println(*ax);
-		Serial.print("Ay: ");
-		Serial.println(*ay);
-		Serial.print("Az: ");
-		Serial.println(*az);
-		Serial.print("Gx: ");
-		Serial.println(*gx);
-		Serial.print("Gy: ");
-		Serial.println(*gy);
-		Serial.print("Gz: ");
+		Serial.print(*ax);
+		Serial.print(" Ay: ");
+		Serial.print(*ay);
+		Serial.print(" Az: ");
+		Serial.print(*az);
+		Serial.print(" Gx: ");
+		Serial.print(*gx);
+		Serial.print(" Gy: ");
+		Serial.print(*gy);
+		Serial.print(" Gz: ");
 		Serial.println(*gz);
 #endif 
-
 		//accelgyro.getAcceleration(&ax, &ay, &az);
 		//accelgyro.getRotation(&gx, &gy, &gz);
 	}

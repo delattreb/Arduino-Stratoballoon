@@ -12,11 +12,11 @@ DeviceAddress insideThermometer;
 class ds18b20Access {
 
 private:
-
+	
+protected:
 
 public:
-
-
+	
 	ds18b20Access() {
 	}
 
@@ -31,7 +31,7 @@ public:
 		sensors.begin();
 		// set the resolution to 9-12 bit 
 		sensors.setResolution(insideThermometer, 10);
-#ifdef DEBUG
+#ifdef INFO
 		Serial.println("-- DS18B20 --");
 		Serial.print("Found ");
 		Serial.print(sensors.getDeviceCount(), DEC);
@@ -60,8 +60,14 @@ public:
 	//
 	void getData(float *temp)
 	{
-		sensors.requestTemperatures(); 
+		sensors.requestTemperatures();
 		*temp = sensors.getTempC(insideThermometer);
+#ifdef INFO
+		Serial.print("DS18B20 Temp: ");
+		Serial.print(*temp);
+		Serial.println(" C");
+#endif 
+
 	}
 	//
 	// printAddress

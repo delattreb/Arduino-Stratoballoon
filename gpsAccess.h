@@ -24,7 +24,7 @@ public:
 
 	void begin()
 	{
-		nss.begin(9600);
+		nss.begin(SERIAL_SOFT);
 	}
 
 	//
@@ -33,7 +33,7 @@ public:
 	void getSpeed(float *kmph)
 	{
 		*kmph = tinygps.f_speed_kmph(); // speed in km/hr
-#ifdef DEBUG
+#ifdef INFO
 		Serial.print("Vitesse: ");
 		Serial.println(*kmph);
 #endif
@@ -45,13 +45,12 @@ public:
 	void getCourse(float *fc)
 	{
 		*fc = tinygps.f_course(); // course in degrees
-#ifdef DEBUG
+#ifdef INFO
 		Serial.print("Course: ");
 		Serial.println(*fc);
 #endif
 	}
-
-
+	
 	//
 	// getAltitude
 	//
@@ -59,9 +58,10 @@ public:
 	{
 
 		*alt = tinygps.f_altitude(); // +/- altitude in meters
-#ifdef DEBUG
+#ifdef INFO
 		Serial.print("Altitude: ");
-		Serial.println(*alt);
+		Serial.print(*alt);
+		Serial.println(" m");
 #endif
 	}
 
@@ -94,6 +94,7 @@ public:
 	//
 	// getDateTime
 	//
+	/*
 	void getDateTime(DateTime *now)
 	{
 		int year;
@@ -110,17 +111,21 @@ public:
 		nowGPS.setminute(int(minute));
 		nowGPS.setsecond(int(second));
 		*now = nowGPS;
-#ifdef DEBUG
+#ifdef INFO
+		Serial.print("Time: ");
 		Serial.print(now->hour());
+		Serial.print(":");
 		Serial.print(now->minute());
-		Serial.println(now->second());
-		Serial.println("");
+		Serial.print(":");
+		Serial.print(now->second());
+		Serial.print(" Date: ");
 		Serial.print(now->day());
+		Serial.print("/");
 		Serial.print(now->month());
+		Serial.print("/");
 		Serial.println(now->year());
 #endif
-
-	}
+	}*/
 
 	//
 	// getStatistics
@@ -128,7 +133,7 @@ public:
 	void getStatistics(unsigned long *chars, unsigned short *sentences, unsigned short *failed_checksum)
 	{
 		tinygps.stats(chars, sentences, failed_checksum);
-#ifdef DEBUG
+#ifdef INFO
 		Serial.print("Nb Char: ");
 		Serial.println(*chars);
 		Serial.print("Phrase ok: ");
@@ -136,7 +141,6 @@ public:
 		Serial.print("Checksum: ");
 		Serial.println(*failed_checksum);
 #endif
-
 	}
 
 	//
@@ -145,14 +149,12 @@ public:
 	void getPosition(long *flat, long *flon, unsigned long *fix_age)
 	{
 		tinygps.get_position(flat, flon, fix_age);
-
-#ifdef DEBUG
-		Serial.print("Latitude: ");
-		Serial.println(*flat);
-		Serial.print("Longitude: ");
+#ifdef INFO
+		Serial.print("Lat: ");
+		Serial.print(*flat);
+		Serial.print(" Lon: ");
 		Serial.println(*flon);
 #endif 
-
 	}
 
 	//

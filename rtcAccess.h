@@ -23,18 +23,18 @@ public:
 	void init() {
 		rtc.begin();
 		if (!rtc.isrunning()) {
-#ifdef DEBUG
+#ifdef INFO
 			Serial.println("RTC is NOT running");
 #endif 
 			rtc.adjust(DateTime(__DATE__, __TIME__));
-#ifdef DEBUG
+#ifdef INFO
 			Serial.println("Date and time adjusted");
 			Serial.println(getDateStr());
 			Serial.println(getTimeStr());
 #endif 
 		}
 		else {
-#ifdef DEBUG
+#ifdef INFO
 			Serial.println("RTC is running");
 			Serial.println(getDateStr());
 			Serial.println(getTimeStr());
@@ -45,6 +45,13 @@ public:
 	DateTime getDateTime() {
 		DateTime now = rtc.now();
 		return now;
+	}
+
+	String getDateTimeStr()
+	{
+		DateTime now = rtc.now();
+		return String(now.day()) + "/" + String(now.month()) + "/" + String(now.year()) + " " + String(now.hour()) + ":" + String(now.minute()) + ":" + String(now.second());
+
 	}
 
 	String getDateStr()
