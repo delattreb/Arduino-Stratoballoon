@@ -1,0 +1,81 @@
+//
+// Created by Bruno on 12/08/2017.
+//
+
+#include <OneWire.h>
+#include <DallasTemperature.h>
+
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
+DeviceAddress insideThermometer;
+
+class ds18b20Access {
+
+private:
+
+
+public:
+
+
+	ds18b20Access() {
+	}
+
+	~ds18b20Access() {
+	}
+
+	//
+	// begin
+	//
+	void begin()
+	{
+		sensors.begin();
+		// set the resolution to 9-12 bit 
+		sensors.setResolution(insideThermometer, 10);
+#ifdef DEBUG
+		Serial.println("-- DS18B20 --");
+		Serial.print("Found ");
+		Serial.print(sensors.getDeviceCount(), DEC);
+		Serial.println(" devices.");
+
+		// report parasite power requirements
+		Serial.print("Parasite power is: ");
+		if (sensors.isParasitePowerMode()) Serial.println("ON");
+		else Serial.println("OFF");
+
+		if (!sensors.getAddress(insideThermometer, 0)) Serial.println("Unable to find address for Device 0");
+
+		// show the addresses we found on the bus
+		Serial.print("Device 0 Address: ");
+		printAddress(insideThermometer);
+		Serial.println();
+
+		Serial.print("Device 0 Resolution: ");
+		Serial.println(sensors.getResolution(insideThermometer), DEC);
+		Serial.println("");
+#endif 
+	}
+
+	//
+	// getData
+	//
+	void getData(float *temp)
+	{
+		sensors.requestTemperatures(); 
+		*temp = sensors.getTempC(insideThermometer);
+	}
+	//
+	// printAddress
+	//
+	void printAddress(DeviceAddress deviceAddress)
+	{
+		for (uint8_t i = 0; i < 8; i++)
+		{
+			if (deviceAddress[i] < 16) Serial.print("0");
+			Serial.print(deviceAddress[i], HEX);
+		}
+	}
+};
+
+
+
+

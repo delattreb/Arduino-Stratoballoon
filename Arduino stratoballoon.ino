@@ -15,6 +15,7 @@
 #include "ledAccess.h"
 #include "gpsAccess.h"
 #include "gyroAccess.h"
+#include "ds18b20Access.h"
 
 #pragma region Global var
 BME280Access bme;
@@ -24,6 +25,7 @@ lcdAccess lcd;
 ledAccess led;
 gpsAccess gps;
 gyroAccess gyro;
+ds18b20Access ds18b20;
 
 DateTime now;
 static unsigned long previousMillis = 0;
@@ -52,8 +54,9 @@ void setup() {
 	Wire.begin();
 	Wire.setClock(400000); // 400kHz I2C clock. 
 
-	gyro.begin();
-	gps.begin();
+	ds18b20.begin();
+	//gyro.begin();
+	//gps.begin();
 	//rtc.init();
 	//bme.init();
 	//lcd.begin();
@@ -75,18 +78,23 @@ void loop() {
 	int16_t ax, ay, az, gx, gy, gz;
 	float altitude, speed, course;
 	long prec;
-	float temp, hum, pres, dewpoint, dhttemp, dhthum;
+	float dstemp,temp, hum, pres, dewpoint, dhttemp, dhthum;
+
+	//Get time
 	previousMillis = millis();
 
+	ds18b20.getData(&dstemp);
+	Serial.println(dstemp);
+	/*
 	if (gps.getData()) {
 		gps.getPosition(&lat, &lon, &age);
-		//gps.getStatistics(&chars, &sentences, &failed_checksum);
-		//gps.getDateTime(&now);
-		//gps.getAltitude(&altitude);
-		//gps.getCourse(&course);
-		//gps.getSpeed(&speed);
-	}
-	gyro.getData(&ax, &ay, &az, &gx, &gy, &gz);
+		gps.getStatistics(&chars, &sentences, &failed_checksum);
+		gps.getDateTime(&now);
+		gps.getAltitude(&altitude);
+		gps.getCourse(&course);
+		gps.getSpeed(&speed);
+	}*/
+	//gyro.getData(&ax, &ay, &az, &gx, &gy, &gz);
 
 	//bme.getData(&temp, &hum, &pres);
 	//bme.CalculatedData(&altitude, &dewpoint);

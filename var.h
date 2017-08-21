@@ -14,7 +14,7 @@
 #define TXPIN 5
 
 //DHT22
-#define PINDHT22 2
+//#define PINDHT22 2
 
 //LCD
 #define LCD_ADDR 0x3F
@@ -32,6 +32,9 @@
 
 //MPU6050
 #define INTERRUPT_PIN 2  
+
+//DS18B20
+#define ONE_WIRE_BUS 8
 
 //LED
 #define LED_PIN 7

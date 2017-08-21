@@ -11,7 +11,7 @@ class gyroAccess {
 
 private:
 
-
+		
 public:
 
 	gyroAccess() {
