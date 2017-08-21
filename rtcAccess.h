@@ -7,12 +7,9 @@
 class rtcAccess {
 
 private:
-
 	DS1307 rtc;
 
 public:
-
-	bool timeset = false;
 
 	rtcAccess() {
 	}
@@ -42,6 +39,11 @@ public:
 		}
 	}
 
+	void adjust()
+	{
+		rtc.adjust(DateTime(__DATE__, __TIME__));
+	}
+
 	DateTime getDateTime() {
 		DateTime now = rtc.now();
 		return now;
@@ -51,7 +53,12 @@ public:
 	{
 		DateTime now = rtc.now();
 		return String(now.day()) + "/" + String(now.month()) + "/" + String(now.year()) + " " + String(now.hour()) + ":" + String(now.minute()) + ":" + String(now.second());
+	}
 
+	String getDateTimeStrEn()
+	{
+		DateTime now = rtc.now();
+		return String(String(now.year()) + "-" + String(now.month()) + "-" + now.day()) + " " + String(now.hour()) + ":" + String(now.minute()) + ":" + String(now.second());
 	}
 
 	String getDateStr()

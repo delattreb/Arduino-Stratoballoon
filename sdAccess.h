@@ -2,6 +2,8 @@
 // Created by Bruno on 30/06/2017.
 //
 
+#include <SD.h>
+
 class sdAccess {
 
 private:
@@ -14,15 +16,14 @@ public:
 	~sdAccess() {
 	}
 
-	void WriteData(long lat, long lon, float gpsaltitude, int16_t ax, int16_t ay, int16_t az, int16_t gx, int16_t gy, int16_t gz, float dstemp, float temp, float hum, float pres, String now) {
+	void WriteData(long lat, long lon, float gpsaltitude, float speed, int16_t ax, int16_t ay, int16_t az, int16_t gx, int16_t gy, int16_t gz, float dstemp, float temp, float hum, float pres, String now) {
 		String strFile = LOG_FILE;
-#ifdef DEBUG
-		Serial.print("SD W");
-		Serial.println(strFile);
-#endif		
 		if (!SD.begin(SD_PIN)) {}
 		File myFile = SD.open(strFile, FILE_WRITE);
 		if (myFile) {
+#ifdef DEBUG
+			Serial.println("Log");
+#endif 
 			//Date
 			myFile.print(now);
 			myFile.print(";");
@@ -30,23 +31,25 @@ public:
 			//GPS
 			myFile.print(lat);
 			myFile.print(";");
-			myFile.print(String(lon));
+			myFile.print(lon);
 			myFile.print(";");
 			myFile.print(String(gpsaltitude));
 			myFile.print(";");
+			myFile.print(String(speed));
+			myFile.print(";");
 
 			//Gyro
-			myFile.print(String(ax));
+			myFile.print(ax);
 			myFile.print(";");
-			myFile.print(String(ay));
+			myFile.print(ay);
 			myFile.print(";");
-			myFile.print(String(az));
+			myFile.print(az);
 			myFile.print(";");
-			myFile.print(String(gx));
+			myFile.print(gx);
 			myFile.print(";");
-			myFile.print(String(gy));
+			myFile.print(gy);
 			myFile.print(";");
-			myFile.print(String(gz));
+			myFile.print(gz);
 			myFile.print(";");
 
 			//DS18B20
@@ -58,12 +61,12 @@ public:
 			myFile.print(";");
 			myFile.print(String(hum));
 			myFile.print(";");
-			myFile.print(String(pres));
-			myFile.println(";");
+			myFile.println(String(pres));
 
 			myFile.close();
-		} else {
-#ifdef DEBUG
+		}
+		else {
+#ifdef INFO
 			Serial.println("SD KO");
 #endif		
 		}

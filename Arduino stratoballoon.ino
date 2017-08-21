@@ -4,7 +4,6 @@
 
 #include <Arduino.h>
 #include <SPI.h>
-#include <SD.h>
 #include <Wire.h>
 
 #include "var.h"
@@ -22,7 +21,7 @@ gpsAccess gps;
 gyroAccess gyro;
 ds18b20Access ds18b20;
 rtcAccess rtc;
-static unsigned long previousMillis = 0;
+//static unsigned long previousMillis = 0;
 #pragma endregion 
 
 //
@@ -45,9 +44,7 @@ void setup() {
 	gps.begin();
 	bme.init();
 	rtc.init();
-
-	//Get time
-	previousMillis = millis();
+	//rtc.adjust(); //TODO: Remove this line when battery is OK
 }
 
 //
@@ -59,14 +56,12 @@ void loop() {
 	int16_t ax, ay, az, gx, gy, gz;
 	float gpsaltitude, dstemp, temp, hum, pres, dewpoint, altitude, speed, course;
 
-	//DateTime now;
-
 	// ACQ GPS
 	if (gps.getData()) {
 		gps.getPosition(&lat, &lon, &age);
 		gps.getAltitude(&gpsaltitude);
 		//gps.getCourse(&course);
-		//gps.getSpeed(&speed);
+		gps.getSpeed(&speed);
 	}
 
 	// ACQ Gyro
@@ -79,9 +74,7 @@ void loop() {
 	bme.getData(&temp, &hum, &pres);
 
 	//Save data on SD card
-	if (millis() - previousMillis >= LOG_FREQUENCY) {
-		previousMillis = millis();
-		sda.WriteData(lat, lon, gpsaltitude, ax, ay, az, gx, gy, gz, dstemp, temp, hum, pres, rtc.getDateTimeStr());
-	}
+	sda.WriteData(lat, lon, gpsaltitude, speed, ax, ay, az, gx, gy, gz, dstemp, temp, hum, pres, rtc.getDateTimeStrEn());
+
 	delay(ACQ_FREQUENCY);
 }

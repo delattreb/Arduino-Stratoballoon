@@ -12,7 +12,7 @@
 
 //Acquisition frequency
 #define ACQ_FREQUENCY 10000
-#define LOG_FREQUENCY 20000
+#define LOG_FREQUENCY 10000
 #define ACQ_GPS_DURATION 800
 
 #define BLINK_TIME 50
@@ -30,7 +30,7 @@
 
 //SD Access Pin
 #define SD_PIN 10
-#define LOG_FILE "acq.log"
+#define LOG_FILE "acq.csv"
 
 //Serial
 #define SERIAL_BAUD 38400 //Check value for 8Mhz
