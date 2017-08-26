@@ -11,7 +11,7 @@
 #define TXPIN 5
 
 //Acquisition frequency
-#define ACQ_FREQUENCY 5000
+#define ACQ_FREQUENCY 10000
 #define ACQ_GPS_DURATION 800
 
 #define BLINK_TIME 50
@@ -22,7 +22,7 @@
 #define INTERRUPT_PIN 2  
 
 //DS18B20
-#define ONE_WIRE_BUS 8
+#define ONE_WIRE_BUS 7
 
 //LED
 #define LED_PIN 7
@@ -41,7 +41,7 @@
 #define READY 1
 
 //DEBUG MODE
-#define DEBUG
+//#define DEBUG
 
 //INFO MODE
 //#define INFO

@@ -31,18 +31,18 @@ public:
 		sensors.begin();
 		// set the resolution to 9-12 bit 
 		sensors.setResolution(insideThermometer, 10);
+		sensors.getAddress(insideThermometer, 0);
 #ifdef INFO
 		Serial.println("DS18B20 OK");
-		/*
+		
 		Serial.print(sensors.getDeviceCount(), DEC);
 		Serial.println(" device");
 
 		// report parasite power requirements
-		
 		Serial.print("Parasite power is: ");
 		if (sensors.isParasitePowerMode()) Serial.println("ON");
 		else Serial.println("OFF");
-		
+	
 		if (!sensors.getAddress(insideThermometer, 0)) Serial.println("Unable to find address");
 
 		// show the addresses we found on the bus
@@ -52,7 +52,7 @@ public:
 
 		Serial.print("Resolution: ");
 		Serial.println(sensors.getResolution(insideThermometer), DEC);
-		Serial.println("");*/
+		Serial.println("");
 #endif 
 	}
 
@@ -64,9 +64,8 @@ public:
 		sensors.requestTemperatures();
 		*temp = sensors.getTempC(insideThermometer);
 #ifdef INFO
-		Serial.print("DS18B20 Temp: ");
+		Serial.print("Temp: ");
 		Serial.print(*temp);
-		Serial.println(" C");
 #endif 
 
 	}
