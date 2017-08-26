@@ -34,7 +34,7 @@ public:
 	{
 		*kmph = tinygps.f_speed_kmph(); // speed in km/hr
 #ifdef INFO
-		Serial.print("Vitesse: ");
+		Serial.print("Vit: ");
 		Serial.println(*kmph);
 #endif
 	}
@@ -46,7 +46,7 @@ public:
 	{
 		*fc = tinygps.f_course(); // course in degrees
 #ifdef INFO
-		Serial.print("Course: ");
+		Serial.print("Cour: ");
 		Serial.println(*fc);
 #endif
 	}
@@ -59,9 +59,8 @@ public:
 
 		*alt = tinygps.f_altitude(); // +/- altitude in meters
 #ifdef INFO
-		Serial.print("Altitude: ");
-		Serial.print(*alt);
-		Serial.println(" m");
+		Serial.print("Alt ");
+		Serial.println(*alt);
 #endif
 	}
 

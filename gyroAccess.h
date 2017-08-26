@@ -5,7 +5,8 @@
 #include "Wire.h"
 #endif
 
-MPU6050 accelgyro;
+//MPU6050 accelgyro;     // <-- use for AD0 low
+MPU6050 accelgyro(0x69); // <-- use for AD0 high
 
 class gyroAccess {
 
@@ -24,8 +25,7 @@ public:
 		accelgyro.initialize();
 
 #ifdef INFO
-		Serial.println("-- MPU6050 --");
-		Serial.println(accelgyro.testConnection() ? "MPU6050 connection successful" : "MPU6050 connection failed");
+		Serial.println(accelgyro.testConnection() ? "MPU6050 OK" : "MPU6050 KO!");
 #endif 
 
 		/*// use the code below to change accel/gyro offset values

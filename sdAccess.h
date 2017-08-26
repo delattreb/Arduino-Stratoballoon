@@ -7,6 +7,7 @@
 class sdAccess {
 
 private:
+	String strFile = LOG_FILE;
 
 public:
 
@@ -16,14 +17,23 @@ public:
 	~sdAccess() {
 	}
 
-	void WriteData(long lat, long lon, float gpsaltitude, float speed, int16_t ax, int16_t ay, int16_t az, int16_t gx, int16_t gy, int16_t gz, float dstemp, float temp, float hum, float pres, String now) {
-		String strFile = LOG_FILE;
-		if (!SD.begin(SD_PIN)) {}
-		File myFile = SD.open(strFile, FILE_WRITE);
-		if (myFile) {
-#ifdef DEBUG
-			Serial.println("Log");
+	void init()
+	{
+		if (!SD.begin(SD_PIN)) {
+#ifdef INFO
+			Serial.println("SD KO!");
 #endif 
+		}
+		else {
+#ifdef INFO
+			Serial.println("SD OK");
+#endif 
+		}
+	}
+
+	void WriteData(long lat, long lon, float gpsaltitude, float gpscourse, float speed, int16_t ax, int16_t ay, int16_t az, int16_t gx, int16_t gy, int16_t gz, float dstemp, float temp, float hum, float pres, String now) {
+		File myFile = SD.open(LOG_FILE, FILE_WRITE);
+		if (myFile) {
 			//Date
 			myFile.print(now);
 			myFile.print(";");
@@ -34,6 +44,8 @@ public:
 			myFile.print(lon);
 			myFile.print(";");
 			myFile.print(String(gpsaltitude));
+			myFile.print(";");
+			myFile.print(String(gpscourse));
 			myFile.print(";");
 			myFile.print(String(speed));
 			myFile.print(";");
@@ -64,10 +76,13 @@ public:
 			myFile.println(String(pres));
 
 			myFile.close();
+#ifdef DEBUG
+			Serial.println("SD Print");
+#endif		
 		}
 		else {
-#ifdef INFO
-			Serial.println("SD KO");
+#ifdef DEBUG
+			Serial.println("SD not Print");
 #endif		
 		}
 	}

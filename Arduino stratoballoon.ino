@@ -7,21 +7,20 @@
 #include <Wire.h>
 
 #include "var.h"
-#include "bme280Access.h"
-#include "sdAccess.h"
+#include "bme280SparkAccess.h"
 #include "gpsAccess.h"
 #include "gyroAccess.h"
 #include "rtcAccess.h"
 #include "ds18b20Access.h"
+#include "sdAccess.h"
 
 #pragma region Global var
-BME280Access bme;
-sdAccess sda;
+BME280SparkAccess bme;
 gpsAccess gps;
 gyroAccess gyro;
 ds18b20Access ds18b20;
 rtcAccess rtc;
-//static unsigned long previousMillis = 0;
+sdAccess sda;
 #pragma endregion 
 
 //
@@ -39,12 +38,12 @@ void setup() {
 	Wire.begin();
 	Wire.setClock(400000); // 400kHz I2C clock. 
 
+	sda.init();
 	ds18b20.begin();
 	gyro.begin();
-	gps.begin();
+	gps.begin(); 
 	bme.init();
 	rtc.init();
-	//rtc.adjust(); //TODO: Remove this line when battery is OK
 }
 
 //
@@ -54,27 +53,28 @@ void loop() {
 	long lat, lon;
 	unsigned long age;
 	int16_t ax, ay, az, gx, gy, gz;
-	float gpsaltitude, dstemp, temp, hum, pres, dewpoint, altitude, speed, course;
-
+	float gpsaltitude, dstemp, temp, hum, pres, alt, dewpoint, gpsalt, speed, gpscourse;
+	
 	// ACQ GPS
+	
 	if (gps.getData()) {
 		gps.getPosition(&lat, &lon, &age);
-		gps.getAltitude(&gpsaltitude);
-		//gps.getCourse(&course);
+		gps.getAltitude(&gpsalt);
+		gps.getCourse(&gpscourse);
 		gps.getSpeed(&speed);
 	}
+
+	// ACQ BME208
+	bme.getData(&temp, &hum, &pres, &alt);
 
 	// ACQ Gyro
 	gyro.getData(&ax, &ay, &az, &gx, &gy, &gz);
 
 	// ACQ DS18B20
 	ds18b20.getData(&dstemp);
-
-	// ACQ BME208
-	bme.getData(&temp, &hum, &pres);
-
-	//Save data on SD card
-	sda.WriteData(lat, lon, gpsaltitude, speed, ax, ay, az, gx, gy, gz, dstemp, temp, hum, pres, rtc.getDateTimeStrEn());
+	
+	// Save data on SD card
+	sda.WriteData(lat, lon, gpsalt, gpscourse, speed, ax, ay, az, gx, gy, gz, dstemp, temp, hum, pres, rtc.getDateTimeStrEn());
 
 	delay(ACQ_FREQUENCY);
 }

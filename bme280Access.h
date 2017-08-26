@@ -11,7 +11,7 @@ class BME280Access {
 
 private:
 
-	BME280I2C bme;
+	BME280I2C bme280;
 
 public:
 
@@ -22,39 +22,38 @@ public:
 	}
 
 	void init() {
+		while (!bme280.begin()) {
 #ifdef INFO
-		Serial.println("-- BME280 --");
-#endif 
-		while (!bme.begin()) {
-#ifdef INFO
-			Serial.println("Could not find BME280 sensor");
+			Serial.println("BME280 KO!");
 #endif
 			delay(1000);
 		}
-
+#ifdef INFO
+		Serial.println("BME280 OK");
+#endif 	
 	}
 
 	void getData(float  *ttemp, float *thum, float *tpres) {
 		float temp, hum, pres;
-		uint8_t pressureUnit(0x0);  // unit: B000 = Pa, B001 = hPa, B010 = Hg, B011 = atm, B100 = bar, B101 = torr, B110 = N/m^2, B111 = psi
+		uint8_t pressureUnit(0x00);  // unit: B000 = Pa, B001 = hPa, B010 = Hg, B011 = atm, B100 = bar, B101 = torr, B110 = N/m^2, B111 = psi
 
-		bme.read(pres, temp, hum, true, pressureUnit);
+		bme280.read(pres, temp, hum, true, pressureUnit);
 		*ttemp = temp;
 		*thum = hum;
 		*tpres = pres;
 #ifdef INFO
 		Serial.print("Temp: ");
-		Serial.print(temp);
+		Serial.print(*ttemp);
 		Serial.print(" Hum: ");
-		Serial.print(hum);
+		Serial.print(*thum);
 		Serial.print(" Prec: ");
-		Serial.println(pres);
+		Serial.println(*tpres);
 #endif
 	}
 
 	void CalculatedData(float* taltitude, float* tdewpoint) {
-		float altitude = bme.alt(true);
-		float dewPoint = bme.dew(true);
+		float altitude = bme280.alt(true);
+		float dewPoint = bme280.dew(true);
 		*taltitude = altitude;
 		*tdewpoint = dewPoint;
 #ifdef INFO

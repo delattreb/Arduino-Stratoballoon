@@ -32,26 +32,27 @@ public:
 		// set the resolution to 9-12 bit 
 		sensors.setResolution(insideThermometer, 10);
 #ifdef INFO
-		Serial.println("-- DS18B20 --");
-		Serial.print("Found ");
+		Serial.println("DS18B20 OK");
+		/*
 		Serial.print(sensors.getDeviceCount(), DEC);
-		Serial.println(" devices.");
+		Serial.println(" device");
 
 		// report parasite power requirements
+		
 		Serial.print("Parasite power is: ");
 		if (sensors.isParasitePowerMode()) Serial.println("ON");
 		else Serial.println("OFF");
-
-		if (!sensors.getAddress(insideThermometer, 0)) Serial.println("Unable to find address for Device 0");
+		
+		if (!sensors.getAddress(insideThermometer, 0)) Serial.println("Unable to find address");
 
 		// show the addresses we found on the bus
-		Serial.print("Device 0 Address: ");
+		Serial.print("Address: ");
 		printAddress(insideThermometer);
 		Serial.println();
 
-		Serial.print("Device 0 Resolution: ");
+		Serial.print("Resolution: ");
 		Serial.println(sensors.getResolution(insideThermometer), DEC);
-		Serial.println("");
+		Serial.println("");*/
 #endif 
 	}
 

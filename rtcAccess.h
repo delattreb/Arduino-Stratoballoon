@@ -21,20 +21,18 @@ public:
 		rtc.begin();
 		if (!rtc.isrunning()) {
 #ifdef INFO
-			Serial.println("RTC is NOT running");
+			Serial.print("RTC KO ");
 #endif 
 			rtc.adjust(DateTime(__DATE__, __TIME__));
 #ifdef INFO
-			Serial.println("Date and time adjusted");
-			Serial.println(getDateStr());
-			Serial.println(getTimeStr());
+			Serial.print("adjusted ");
+			Serial.println(getDateTimeStr());
 #endif 
 		}
 		else {
 #ifdef INFO
-			Serial.println("RTC is running");
-			Serial.println(getDateStr());
-			Serial.println(getTimeStr());
+			Serial.print("RTC OK ");
+			Serial.println(getDateTimeStr());
 #endif 
 		}
 	}
@@ -42,6 +40,12 @@ public:
 	void adjust()
 	{
 		rtc.adjust(DateTime(__DATE__, __TIME__));
+#ifdef INFO
+		Serial.print("Heure: ");
+		Serial.println(__TIME__);
+		Serial.print("Date: ");
+		Serial.println(__DATE__);
+#endif
 	}
 
 	DateTime getDateTime() {
