@@ -33,6 +33,9 @@ void setup() {
 		;
 	}
 #endif
+
+	pinMode(LED_PIN, OUTPUT);
+
 	// Init component
 	SPI.begin();
 	Wire.begin();
@@ -56,7 +59,6 @@ void loop() {
 	float gpsaltitude, dstemp, temp, hum, pres, alt, dewpoint, gpsalt, speed, gpscourse;
 	
 	// ACQ GPS
-	
 	if (gps.getData()) {
 		gps.getPosition(&lat, &lon, &age);
 		gps.getAltitude(&gpsalt);
@@ -76,5 +78,8 @@ void loop() {
 	// Save data on SD card
 	sda.WriteData(lat, lon, gpsalt, gpscourse, speed, ax, ay, az, gx, gy, gz, dstemp, temp, hum, pres, alt, rtc.getDateTimeStrEn());
 
+	digitalWrite(LED_PIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+	delay(LED_BLINK);                       // wait for a second
+	digitalWrite(LED_PIN, LOW);    // turn the LED off by making the voltage LOW
 	delay(ACQ_FREQUENCY);
 }

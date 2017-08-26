@@ -25,7 +25,8 @@
 #define ONE_WIRE_BUS 7
 
 //LED
-#define LED_PIN 7
+#define LED_PIN 8
+#define LED_BLINK 100
 
 //SD Access Pin
 #define SD_PIN 10
