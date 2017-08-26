@@ -15,6 +15,7 @@
 #include "sdAccess.h"
 
 #pragma region Global var
+
 BME280SparkAccess bme;
 gpsAccess gps;
 gyroAccess gyro;
@@ -33,7 +34,7 @@ void setup() {
 		;
 	}
 #endif
-
+	//Init Pin for LED
 	pinMode(LED_PIN, OUTPUT);
 
 	// Init component
@@ -78,8 +79,5 @@ void loop() {
 	// Save data on SD card
 	sda.WriteData(lat, lon, gpsalt, gpscourse, speed, ax, ay, az, gx, gy, gz, dstemp, temp, hum, pres, alt, rtc.getDateTimeStrEn());
 
-	digitalWrite(LED_PIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-	delay(LED_BLINK);                       // wait for a second
-	digitalWrite(LED_PIN, LOW);    // turn the LED off by making the voltage LOW
 	delay(ACQ_FREQUENCY);
 }

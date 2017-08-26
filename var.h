@@ -14,10 +14,6 @@
 #define ACQ_FREQUENCY 10000
 #define ACQ_GPS_DURATION 800
 
-#define BLINK_TIME 50
-#define BLINK_INIT 3
-#define BLINK_INIT_TIME 250
-
 //MPU6050
 #define INTERRUPT_PIN 2  
 
@@ -26,7 +22,7 @@
 
 //LED
 #define LED_PIN 8
-#define LED_BLINK 100
+#define LED_BLINK_TIME 65
 
 //SD Access Pin
 #define SD_PIN 10

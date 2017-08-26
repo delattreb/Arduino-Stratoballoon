@@ -3,12 +3,12 @@
 //
 
 #include <SD.h>
+#include "ledAccess.h"
 
 class sdAccess {
 
 private:
-	String strFile = LOG_FILE;
-
+	ledAccess led;
 public:
 
 	sdAccess() {
@@ -32,6 +32,7 @@ public:
 	}
 
 	void WriteData(long lat, long lon, float gpsaltitude, float gpscourse, float speed, int16_t ax, int16_t ay, int16_t az, int16_t gx, int16_t gy, int16_t gz, float dstemp, float temp, float hum, float pres, float alt, String now) {
+		if (!SD.begin(SD_PIN)) {}
 		File myFile = SD.open(LOG_FILE, FILE_WRITE);
 		if (myFile) {
 			//Date
@@ -77,11 +78,14 @@ public:
 			//myFile.print(";");
 			//myFile.println(String(alt));
 			myFile.close();
+			led.BlinkLed(1, LED_BLINK_TIME);
+			
 #ifdef INFO
 			Serial.println("SD Print");
 #endif		
 		}
 		else {
+			led.BlinkLed(3, LED_BLINK_TIME);
 #ifdef INFO
 			Serial.println("SD not Print");
 #endif		
