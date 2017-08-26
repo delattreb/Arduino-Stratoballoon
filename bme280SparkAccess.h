@@ -91,7 +91,7 @@ public:
 	}
 
 
-	void getData(float  *ttemp, float *thum, float *tpres, float *talt) {
+	void getData(float  *ttemp, float *thum, float *tpres) {
 
 		wdt_reset();  //This function resets the counter of the Watchdog Timer. Always use this function if the Watchdog Timer is enabled.
 
@@ -100,7 +100,7 @@ public:
 			*ttemp = bme.readTempC();
 			*thum = bme.readHumidity();
 			*tpres = bme.readPressure();
-			*talt = bme.readAltitudeMeter();
+			//*talt = bme.readAltitudeMeter();
 
 #ifdef  INFO
 			Serial.print(F("Temp "));

@@ -22,6 +22,7 @@ gyroAccess gyro;
 ds18b20Access ds18b20;
 rtcAccess rtc;
 sdAccess sda;
+ledAccess led;
 #pragma endregion 
 
 //
@@ -48,6 +49,7 @@ void setup() {
 	gps.begin(); 
 	bme.init();
 	rtc.init();
+	led.BlinkLed(LED_BLINK_INIT, LED_BLINK_INIT_TIME);
 }
 
 //
@@ -57,7 +59,7 @@ void loop() {
 	long lat, lon;
 	unsigned long age;
 	int16_t ax, ay, az, gx, gy, gz;
-	float gpsaltitude, dstemp, temp, hum, pres, alt, dewpoint, gpsalt, speed, gpscourse;
+	float gpsaltitude, dstemp, temp, hum, pres, dewpoint, gpsalt, speed, gpscourse;
 	
 	// ACQ GPS
 	if (gps.getData()) {
@@ -68,7 +70,7 @@ void loop() {
 	}
 
 	// ACQ BME208
-	bme.getData(&temp, &hum, &pres, &alt);
+	bme.getData(&temp, &hum, &pres);
 
 	// ACQ Gyro
 	gyro.getData(&ax, &ay, &az, &gx, &gy, &gz);
@@ -77,7 +79,7 @@ void loop() {
 	ds18b20.getData(&dstemp);
 
 	// Save data on SD card
-	sda.WriteData(lat, lon, gpsalt, gpscourse, speed, ax, ay, az, gx, gy, gz, dstemp, temp, hum, pres, alt, rtc.getDateTimeStrEn());
+	sda.WriteData(lat, lon, gpsalt, gpscourse, speed, ax, ay, az, gx, gy, gz, dstemp, temp, hum, pres, rtc.getDateTimeStrEn());
 
 	delay(ACQ_FREQUENCY);
 }

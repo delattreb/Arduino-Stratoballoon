@@ -4,7 +4,7 @@
 
 //Software Version
 #define APPNAME "Stratoballoon"
-#define APPVERSION "1.8"
+#define APPVERSION "2.1"
 
 //SoftwareSerial
 #define RXPIN 6
@@ -22,7 +22,10 @@
 
 //LED
 #define LED_PIN 8
-#define LED_BLINK_TIME 65
+#define LED_BLINK_TIME 50
+#define LED_BLINK_INIT 10
+#define LED_BLINK_INIT_TIME 100
+
 
 //SD Access Pin
 #define SD_PIN 10
