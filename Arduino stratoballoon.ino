@@ -77,7 +77,7 @@ void loop() {
 	// ACQ DS18B20
 	ds18b20.getData(&dstemp);
 
-	// Save data on SD card
+	// Save data
 	sda.WriteData(lat, lon, gpsalt, gpscourse, speed, ax, ay, az, gx, gy, gz, dstemp, temp, hum, pres, rtc.getDateTimeStrEn());
 
 	delay(ACQ_FREQUENCY);
