@@ -15,7 +15,6 @@
 #include "sdAccess.h"
 
 #pragma region Global var
-
 BME280SparkAccess bme;
 gpsAccess gps;
 gyroAccess gyro;
