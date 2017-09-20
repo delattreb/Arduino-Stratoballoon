@@ -7,21 +7,27 @@
 #include <Wire.h>
 
 #include "var.h"
-#include "bme280SparkAccess.h"
-#include "gpsAccess.h"
-#include "gyroAccess.h"
-#include "rtcAccess.h"
-#include "ds18b20Access.h"
-#include "sdAccess.h"
+//#include "libBME280.h"
+#include "libGPS.h"
+#include "libMPU6050.h"
+#include "libDS1307.h"
+#include "lib18b20.h"
+#include "libLED.h"
+#include "libSD.h"
+#include "libSI7021.h"
+//#include "libAPRS.h"
+
 
 #pragma region Global var
-BME280SparkAccess bme;
-gpsAccess gps;
-gyroAccess gyro;
-ds18b20Access ds18b20;
-rtcAccess rtc;
-sdAccess sda;
-ledAccess led;
+//libBME280 bme;
+libGPS gps;
+libMPU6050 gyro;
+lib18b20 ds18b20;
+libDS1307 rtc;
+libSD sda;
+libLED led;
+libSI7021 si7021;
+//APRSAccess aprs;
 #pragma endregion 
 
 //
@@ -46,9 +52,11 @@ void setup() {
 	ds18b20.begin();
 	gyro.begin();
 	gps.begin(); 
-	bme.init();
+	//bme.init();
+	si7021.init();
 	rtc.init();
 	led.BlinkLed(LED_BLINK_INIT, LED_BLINK_INIT_TIME);
+	//aprs.init();
 }
 
 //
@@ -58,9 +66,14 @@ void loop() {
 	long lat, lon;
 	unsigned long age;
 	int16_t ax, ay, az, gx, gy, gz;
-	float gpsaltitude, dstemp, temp, hum, pres, dewpoint, gpsalt, speed, gpscourse;
-	
+	float gpsaltitude, dstemp, temp, hum, pres, sitemp, sihum, dewpoint, gpsalt, speed, gpscourse;
+
+	Serial.println("Start");
+	//aprs.locationUpdateExample();
+	//aprs.test();
+
 	// ACQ GPS
+	
 	if (gps.getData()) {
 		gps.getPosition(&lat, &lon, &age);
 		gps.getAltitude(&gpsalt);
@@ -69,13 +82,17 @@ void loop() {
 	}
 
 	// ACQ BME208
-	bme.getData(&temp, &hum, &pres);
+	//bme.getData(&temp, &hum, &pres);
 
 	// ACQ Gyro
 	gyro.getData(&ax, &ay, &az, &gx, &gy, &gz);
 
 	// ACQ DS18B20
 	ds18b20.getData(&dstemp);
+
+	// Acq SI7021
+	sitemp = si7021.getTemperature();
+	sihum = si7021.getHumidity();
 
 	// Save data
 	sda.WriteData(lat, lon, gpsalt, gpscourse, speed, ax, ay, az, gx, gy, gz, dstemp, temp, hum, pres, rtc.getDateTimeStrEn());

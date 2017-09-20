@@ -28,11 +28,11 @@
 
 
 //SD Access Pin
-#define SD_PIN 10
-#define LOG_FILE "LOG.csv"
+#define SD_PIN 7
+#define LOG_FILE "log.csv"
 
 //Serial
-#define SERIAL_BAUD 38400 //Check value for 8Mhz
+#define SERIAL_BAUD 9600 //Check value for 8Mhz
 #define SERIAL_SOFT 9600
 
 //VAR DIALOG
@@ -41,7 +41,7 @@
 #define READY 1
 
 //DEBUG MODE
-//#define DEBUG
+#define DEBUG
 
 //INFO MODE
-//#define INFO
+#define INFO
