@@ -6,12 +6,20 @@
 #define APPNAME "Stratoballoon"
 #define APPVERSION "2.1"
 
+// Arduino
+//#define ARDUINO_1
+#define ARDUINO_2
+
+#define DEBUG
+#define INFO
+
 //SoftwareSerial
 #define RXPIN 6
 #define TXPIN 5
 
 //Acquisition frequency
-#define ACQ_FREQUENCY 10000
+#define ACQ_FREQUENCY_1 10000
+#define ACQ_FREQUENCY_2 2000
 #define ACQ_GPS_DURATION 800
 
 //MPU6050
@@ -28,8 +36,8 @@
 
 
 //SD Access Pin
-#define SD_PIN 7
-#define LOG_FILE "log.csv"
+#define SD_PIN 10
+#define LOG_FILE_DATA "log"
 
 //Serial
 #define SERIAL_BAUD 9600 //Check value for 8Mhz
@@ -40,8 +48,4 @@
 #define NOK -1
 #define READY 1
 
-//DEBUG MODE
-#define DEBUG
 
-//INFO MODE
-#define INFO

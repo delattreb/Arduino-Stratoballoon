@@ -7,28 +7,41 @@
 #include <Wire.h>
 
 #include "var.h"
-//#include "libBME280.h"
-#include "libGPS.h"
-#include "libMPU6050.h"
-#include "libDS1307.h"
-#include "lib18b20.h"
-#include "libLED.h"
 #include "libSD.h"
+#include "libDS1307.h"
+#include "libLED.h"
+
+#ifdef ARDUINO_1
+#include "libBME280.h"
+#include "libGPS.h"
+#include "lib18b20.h"
 #include "libSI7021.h"
 //#include "libAPRS.h"
+#endif 
 
+#ifdef ARDUINO_2
+#include "libMPU6050.h"
+#endif
 
 #pragma region Global var
-//libBME280 bme;
-libGPS gps;
-libMPU6050 gyro;
-lib18b20 ds18b20;
-libDS1307 rtc;
 libSD sda;
+libDS1307 rtc;
 libLED led;
+
+#ifdef ARDUINO_1
+libBME280 bme;
+libGPS gps;
+lib18b20 ds18b20;
 libSI7021 si7021;
 //APRSAccess aprs;
+#endif 
+
+#ifdef ARDUINO_2
+libMPU6050 gyro;
+#endif 
 #pragma endregion 
+
+int cpt = 0;
 
 //
 // Setup
@@ -48,32 +61,42 @@ void setup() {
 	Wire.begin();
 	Wire.setClock(400000); // 400kHz I2C clock. 
 
-	sda.init();
+#ifdef ARDUINO_1
 	ds18b20.begin();
-	gyro.begin();
-	gps.begin(); 
-	//bme.init();
+	gps.begin();
+	bme.init();
 	si7021.init();
 	rtc.init();
-	led.BlinkLed(LED_BLINK_INIT, LED_BLINK_INIT_TIME);
 	//aprs.init();
+#endif
+
+#ifdef ARDUINO_2
+	gyro.begin();
+#endif
+
+	sda.init();
+	led.BlinkLed(LED_BLINK_INIT, LED_BLINK_INIT_TIME);
 }
 
 //
 //  Loop
 //
-void loop() {
+void loop()
+{
 	long lat, lon;
 	unsigned long age;
 	int16_t ax, ay, az, gx, gy, gz;
 	float gpsaltitude, dstemp, temp, hum, pres, sitemp, sihum, dewpoint, gpsalt, speed, gpscourse;
+	String file;
 
-	Serial.println("Start");
+
+	//TODO Button Start & stop
+
+#ifdef ARDUINO_1
 	//aprs.locationUpdateExample();
 	//aprs.test();
 
 	// ACQ GPS
-	
 	if (gps.getData()) {
 		gps.getPosition(&lat, &lon, &age);
 		gps.getAltitude(&gpsalt);
@@ -82,10 +105,7 @@ void loop() {
 	}
 
 	// ACQ BME208
-	//bme.getData(&temp, &hum, &pres);
-
-	// ACQ Gyro
-	gyro.getData(&ax, &ay, &az, &gx, &gy, &gz);
+	bme.getData(&temp, &hum, &pres);
 
 	// ACQ DS18B20
 	ds18b20.getData(&dstemp);
@@ -93,9 +113,25 @@ void loop() {
 	// Acq SI7021
 	sitemp = si7021.getTemperature();
 	sihum = si7021.getHumidity();
+#endif 
 
+#ifdef ARDUINO_2
+	// ACQ Gyro
+	gyro.getData(&ax, &ay, &az, &gx, &gy, &gz);
+#endif 
+
+	DateTime now = rtc.getDateTime();
 	// Save data
-	sda.WriteData(lat, lon, gpsalt, gpscourse, speed, ax, ay, az, gx, gy, gz, dstemp, temp, hum, pres, rtc.getDateTimeStrEn());
+	file = LOG_FILE_DATA + String(now.hour()) + ".csv";
+	if (cpt < 1000)
+		sda.WriteData(lat, lon, gpsalt, gpscourse, speed, ax, ay, az, gx, gy, gz, dstemp, temp, hum, pres, rtc.getDateTimeStrEn(), file);
 
-	delay(ACQ_FREQUENCY);
+#ifdef ARDUINO_1
+	delay(ACQ_FREQUENCY_1);
+#endif
+
+#ifdef ARDUINO_2
+	delay(ACQ_FREQUENCY_2);
+#endif
+	cpt += 1;
 }
