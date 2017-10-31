@@ -15,7 +15,7 @@
 #include "libGPS.h"
 #include "lib18b20.h"
 #include "libSI7021.h"
-//#include "libAPRS.h"
+#include "libAPRS.h"
 #endif 
 
 #ifdef ARDUINO_2
@@ -39,7 +39,7 @@ libLED led;
 libGPS gps;
 lib18b20 ds18b20;
 libSI7021 si7021;
-//APRSAccess aprs;
+APRSAccess aprs;
 #endif 
 
 #ifdef ARDUINO_2

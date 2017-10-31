@@ -7,7 +7,7 @@
 #define APPVERSION "2.3"
 
 // Arduino
-//#define ARDUINO_1
+#define ARDUINO_1
 #define ARDUINO_2
 
 #define DEBUG
