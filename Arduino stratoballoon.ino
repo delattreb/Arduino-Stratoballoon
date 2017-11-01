@@ -105,8 +105,9 @@ void loop()
 
 	if (bstart && !bstop) {
 #ifdef ARDUINO_1
-		//aprs.locationUpdateExample();
-		//aprs.test();
+		aprs.locationUpdateExample();
+	
+		aprs.test();
 
 		// ACQ GPS
 		if (gps.getData()) {
